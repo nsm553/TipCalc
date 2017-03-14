@@ -10,14 +10,20 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    @IBOutlet weak var defaulttipControl: UISegmentedControl!
+    @IBOutlet weak var defaultTipSlider: UISlider!
+    @IBOutlet weak var defaultTipValLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         let userPrefs = UserDefaults.standard
-        self.defaulttipControl.selectedSegmentIndex = userPrefs.integer(forKey: "defTipIndx")
+        
+        let tipValue = userPrefs.float(forKey: "defTipValue")
+        
+        defaultTipValLabel.text = "\(Int(tipValue))%"
+        defaultTipSlider.value = Float(tipValue)
+        userPrefs.set(tipValue, forKey: "defTipValue")
 
     }
 
@@ -36,15 +42,14 @@ class SettingsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
     
-    
-    @IBAction func changeDefault(_ sender: Any) {
-        
+    @IBAction func changeDefaultTip(_ sender: Any) {
         let userPrefs = UserDefaults.standard
-        let tipIndx = defaulttipControl.selectedSegmentIndex
-
-        userPrefs.set(tipIndx, forKey: "defTipIndx")
-
+        let tipValue = defaultTipSlider.value
+        defaultTipValLabel.text = "\(Int(tipValue))%"
+        
+        userPrefs.set(tipValue, forKey: "defTipValue")
         userPrefs.synchronize()
     }
 
